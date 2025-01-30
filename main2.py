@@ -1,5 +1,6 @@
 from selenium import webdriver
 from time import sleep
+import datetime
 
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
@@ -93,6 +94,10 @@ def test_login_redirect():
 def test_context_after_login_is_correct():  # Тест на корректный ввод
     correct_text = "Products"
     current_text = driver.find_element(By.XPATH, '//*[@id="header_container"]/div[2]/span')
+
+    driver.save_screenshot(f"sc-real-login\\screenshot_test_context_after_login_is_correct_"
+                           f"{datetime.datetime.now().strftime("%H.%M.%S-%Y.%m.%d")}.png")
+
     assert correct_text == current_text.text, "test_context_after_login_is_correct is Failed"
     file.write("test_context_after_login_is_correct is OK \n")  # Запись в лог
 
@@ -135,15 +140,15 @@ def sc_fake_login():  # Запуск сценария--sc_fake_login()
 
     test_fake_login_label()
 
-set_up()
-user_name = driver.find_element(By.XPATH, '//input[@id="user-name"]')
-login = "standard_user"
-user_name.send_keys(login)
-sleep(2)
-user_name.send_keys(Keys.CONTROL + 'a')
+#  set_up()
+#  user_name = driver.find_element(By.XPATH, '//input[@id="user-name"]')
+#  login = "standard_user"
+#  user_name.send_keys(login)
+#  sleep(2)
+#  user_name.send_keys(Keys.CONTROL + 'a')
 
 
-#  sc_real_login_with_enter()
+sc_real_login_with_enter()
 #  sc_fake_login()
 #  sc_real_login()
 file.close()
