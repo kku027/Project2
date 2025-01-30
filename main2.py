@@ -1,5 +1,7 @@
 from selenium import webdriver
 from time import sleep
+
+from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
 file = open("log.txt", "w")  # Открываем файл для записи логов
@@ -31,13 +33,28 @@ def login():
     user_pass.send_keys(password)  # ВВод пароля
     file.write("Success write password\n")  # Запись в лог
 
-    sleep(3)  # Небольшая задержка для устройства
+#    sleep(3)  # Небольшая задержка для устройства
 
     #  Поиск кнопки входа и клик по ней
     login_butt = driver.find_element(By.XPATH, '//input [@id="login-button"]')
     login_butt.click()
     file.write("Success click login\n")  # Запись в лог
 
+def login_with_enter():
+    #  Поиск поля для ввода имени пользователя
+    user_name = driver.find_element(By.XPATH, '//input[@id="user-name"]')
+    login = "standard_user"
+    user_name.send_keys(login)  # ВВод имени пользователя
+    file.write("Success write login\n")  # Запись в лог
+
+    #  Поиск поля для ввода пароля
+    user_pass = driver.find_element(By.XPATH, '//input[@id="password"]')
+    password = "secret_sauce"
+    user_pass.send_keys(password)  # ВВод пароля
+    file.write("Success write password\n")  # Запись в лог
+
+    user_pass.send_keys(Keys.ENTER)
+    file.write("Success Enter login\n")  # Запись в лог
 
 def fake_login():
     #  Поиск поля для ввода имени пользователя
@@ -52,12 +69,15 @@ def fake_login():
     user_pass.send_keys(password)  # ВВод пароля
     file.write("Success write fake password\n")  # Запись в лог
 
-    sleep(3)  # Небольшая задержка для устройства
+#    sleep(3)  # Небольшая задержка для устройства
 
     #  Поиск кнопки входа и клик по ней
     login_butt = driver.find_element(By.XPATH, '//input [@id="login-button"]')
     login_butt.click()
     file.write("Success click login\n")  # Запись в лог
+
+#  def refresh_page():      # Сценарий ерезагрузки страницы
+#    driver.refresh()
 
 
 # --- Завершение сценария--- End of Sc functions
@@ -98,14 +118,32 @@ def sc_real_login():  # Запуск сценария--sc_real_login()
     test_login_redirect()
     test_context_after_login_is_correct()
 
+def sc_real_login_with_enter():  # Запуск сценария--sc_real_login_with_enter()
+    set_up()
+    login()
+
+    test_login_redirect()
+    test_context_after_login_is_correct()
+
+
 
 def sc_fake_login():  # Запуск сценария--sc_fake_login()
     set_up()
     fake_login()
+#    sleep(2)
+#    refresh_page()     # Запуск перезагрузки страницы
 
     test_fake_login_label()
 
+set_up()
+user_name = driver.find_element(By.XPATH, '//input[@id="user-name"]')
+login = "standard_user"
+user_name.send_keys(login)
+sleep(2)
+user_name.send_keys(Keys.CONTROL + 'a')
 
-sc_fake_login()
-sc_real_login()
+
+#  sc_real_login_with_enter()
+#  sc_fake_login()
+#  sc_real_login()
 file.close()
